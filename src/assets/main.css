@@ -1,0 +1,27 @@
+:root {
+  --white: #ffffff;
+  --black: #212121;
+  --accent: #161142;
+  --radius-sm: 0.25rem;
+  --transition: 0.3s cubic-bezier(0.24, 0, 0.5, 1);
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  user-select: none;
+}
+
+html {
+  color-scheme: light dark;
+}
+
+body {
+  padding-inline: 1.25rem;
+  background-color: light-dark(var(--white), var(--black));
+  color: light-dark(var(--black), var(--white));
+  transition: all var(--transition);
+}
