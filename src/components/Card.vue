@@ -98,7 +98,7 @@ const { name, status = "closed" } = defineProps<{
 }
 
 .card.matched .card-back {
-  background-color: var(--white);
   border: 2px dashed var(--accent);
+  filter: blur(1px);
 }
 </style>
