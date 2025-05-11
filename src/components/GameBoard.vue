@@ -1,29 +1,13 @@
 <script setup lang="ts">
 import { shuffle } from "@/utils/shuffle";
-import { computed, reactive, watch } from "vue";
+import { computed, onMounted, reactive, watch } from "vue";
 import Card from "./Card.vue";
 import VictoryModal from "./VictoryModal.vue";
 
-const symbols = [
-  {
-    name: "1",
-    image: "",
-  },
-  {
-    name: "2",
-    image: "",
-  },
-  {
-    name: "3",
-    image: "",
-  },
-  {
-    name: "4",
-    image: "",
-  },
-];
+const BOARD_SIZE = [4, 6, 8];
 
 const state = reactive({
+  selectedSize: 4,
   cards: [],
   matchedCards: new Set<number>(),
   openedCards: new Set<number>(),
@@ -35,12 +19,23 @@ const matches = computed(() => state.matchedCards.size / 2);
 const twoCardsOpened = computed(() => state.openedCards.size === 2);
 const isVictory = computed(() => matches.value === numPairs.value);
 
-const startNewGame = () => {
+const fetchImages = async (count: number) => {
+  const uniqueIds = Array.from({ length: count }, (_, i) => i + 10);
+  return uniqueIds.map((id) => ({
+    image: `https://picsum.photos/200/200?random=${id}`,
+    name: id,
+  }));
+};
+
+const startNewGame = async () => {
+  const images = await fetchImages(state.selectedSize);
   state.moves = 0;
   state.matchedCards.clear();
   state.openedCards.clear();
-  state.cards = shuffle([...symbols, ...symbols]);
+  state.cards = shuffle([...images, ...images]);
 };
+
+onMounted(() => startNewGame());
 
 const flipCard = (index: number) => {
   state.moves += 1;
@@ -68,8 +63,6 @@ watch(twoCardsOpened, (value) => {
     state.matchedCards.add(secondIndex);
   }
 });
-
-startNewGame();
 </script>
 
 <template>
@@ -77,15 +70,29 @@ startNewGame();
     <h1 class="name">Memory game</h1>
 
     <div class="controls">
+      <label for="size"
+        >Board Size:
+        <select v-model="state.selectedSize" @change="startNewGame">
+          <option v-for="size in BOARD_SIZE" :key="size" :value="size">
+            {{ size }} x {{ size }}
+          </option>
+        </select></label
+      >
+
       <p>Moves: {{ state.moves }}</p>
       <p>Matches: {{ matches }} / {{ numPairs }}</p>
     </div>
 
-    <ul class="board">
+    <ul
+      class="board"
+      :style="{
+        gridTemplateColumns: `repeat(auto-fit, minmax(200px, 1fr))`,
+      }"
+    >
       <Card
         v-for="(card, index) in state.cards"
         :key="index"
-        :name="card.name"
+        :image="card.image"
         :status="getCardStatus(index)"
         :disabled="twoCardsOpened"
         @click="flipCard(index)"
@@ -127,11 +134,12 @@ startNewGame();
 
 .board {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
   gap: 0.75rem;
-  width: fit-content;
+  width: 75%;
   margin-inline: auto;
   margin-bottom: 5rem;
+  justify-content: center;
+  list-style: none;
 }
 
 .reset-button {

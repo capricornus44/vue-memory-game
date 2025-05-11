@@ -23,15 +23,12 @@ html {
 
 body {
   padding-inline: 1.25rem;
+  padding-block: 2rem;
   background-color: light-dark(var(--white), var(--black));
   color: light-dark(var(--black), var(--white));
   transition: all var(--transition);
   overflow: clip;
-}
-
-ul,
-ol {
-  list-style: none;
+  overflow-y: auto;
 }
 
 img {

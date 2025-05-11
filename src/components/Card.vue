@@ -1,6 +1,6 @@
 <script setup lang="ts">
-const { name, status = "closed" } = defineProps<{
-  name: string;
+defineProps<{
+  image: string;
   status: "opened" | "closed" | "matched";
   disabled: boolean;
 }>();
@@ -19,7 +19,7 @@ const { name, status = "closed" } = defineProps<{
       <div class="card-front"></div>
 
       <div class="card-back">
-        <p>{{ name }}</p>
+        <img :src="image" />
       </div>
     </div>
   </li>
@@ -28,7 +28,7 @@ const { name, status = "closed" } = defineProps<{
 <style scoped>
 .card {
   height: 150px;
-  width: 200px;
+  width: 100%;
   perspective: 1000px;
   cursor: pointer;
 }
@@ -84,6 +84,7 @@ const { name, status = "closed" } = defineProps<{
 .card-back {
   border: 2px solid var(--accent);
   transform: rotateY(180deg);
+  overflow: hidden;
 }
 
 .card-back img {
