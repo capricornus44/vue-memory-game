@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import GameBoard from "./components/GameBoard.vue";
 import ThemeSwitcher from "./components/ThemeSwitcher.vue";
 </script>
 
 <template>
   <main class="wrapper">
-    <h1>MEMORY GAME</h1>
+    <GameBoard />
     <ThemeSwitcher />
   </main>
 </template>
@@ -12,8 +13,6 @@ import ThemeSwitcher from "./components/ThemeSwitcher.vue";
 <style scoped>
 .wrapper {
   position: relative;
-  display: grid;
-  place-content: center;
   min-height: 100dvh;
 }
 </style>

@@ -24,17 +24,7 @@ button {
   position: fixed;
   top: 1.5rem;
   right: 1.5rem;
-  padding: 0.75rem 1rem;
-  border: none;
-  border-radius: var(--radius-sm);
-  font-weigh: 700;
-  font-size: 1rem;
   color: var(--white);
   background-color: var(--accent);
-  cursor: pointer;
-}
-
-button:hover {
-  opacity: 0.9;
 }
 </style>
