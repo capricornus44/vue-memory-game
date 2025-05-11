@@ -81,11 +81,6 @@ const { name, status = "closed" } = defineProps<{
   background-size: 200% 200%;
 }
 
-.card-front img {
-  width: 90%;
-  height: 90%;
-}
-
 .card-back {
   border: 2px solid var(--accent);
   transform: rotateY(180deg);
