@@ -17,12 +17,14 @@ const state = reactive({
 const numPairs = computed(() => state.cards.length / 2);
 const matches = computed(() => state.matchedCards.size / 2);
 const twoCardsOpened = computed(() => state.openedCards.size === 2);
-const isVictory = computed(() => matches.value === numPairs.value);
+const isVictory = computed(
+  () => matches.value === numPairs.value && matches.value !== 0
+);
 
 const fetchImages = async (count: number) => {
   const uniqueIds = Array.from({ length: count }, (_, i) => i + 10);
   return uniqueIds.map((id) => ({
-    image: `https://picsum.photos/200/200?random=${id}`,
+    image: `https://picsum.photos/300/300?random=${id}`,
     name: id,
   }));
 };
@@ -34,8 +36,6 @@ const startNewGame = async () => {
   state.openedCards.clear();
   state.cards = shuffle([...images, ...images]);
 };
-
-onMounted(() => startNewGame());
 
 const flipCard = (index: number) => {
   state.moves += 1;
@@ -63,6 +63,8 @@ watch(twoCardsOpened, (value) => {
     state.matchedCards.add(secondIndex);
   }
 });
+
+onMounted(() => startNewGame());
 </script>
 
 <template>
@@ -99,7 +101,7 @@ watch(twoCardsOpened, (value) => {
       />
     </ul>
 
-    <button class="reset-button" @click="startNewGame">New game</button>
+    <button class="new-game-button" @click="startNewGame">New game</button>
 
     <VictoryModal
       :moves="state.moves"
@@ -142,7 +144,7 @@ watch(twoCardsOpened, (value) => {
   list-style: none;
 }
 
-.reset-button {
+.new-game-button {
   margin-inline: auto;
   text-transform: capitalize;
   color: var(--white);
